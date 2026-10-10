@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'django_filters',
     
     # Local apps
+    'apps.foundation',
     'apps.accounts',
     'apps.providers',
     'apps.reviews',
@@ -103,9 +104,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Internationalization
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+# Internationalization — Brazil-first (LGPD, BRL, pt-BR)
+LANGUAGE_CODE = 'pt-br'
+TIME_ZONE = 'America/Sao_Paulo'
+USE_I18N = True
 USE_I18N = True
 USE_TZ = True
 
@@ -152,8 +154,12 @@ CORS_ALLOWED_ORIGINS = config(
 
 # Login URLs
 LOGIN_URL = 'accounts:login'
-LOGIN_REDIRECT_URL = 'core:home'
+LOGIN_REDIRECT_URL = 'foundation:app_home'
 LOGOUT_REDIRECT_URL = 'core:home'
+
+# Google OAuth (optional — login with Google is hidden until configured)
+GOOGLE_CLIENT_ID = config('GOOGLE_CLIENT_ID', default='')
+GOOGLE_CLIENT_SECRET = config('GOOGLE_CLIENT_SECRET', default='')
 
 # OpenAI
 OPENAI_API_KEY = config('OPENAI_API_KEY', default='')
