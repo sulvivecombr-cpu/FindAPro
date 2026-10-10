@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Aparência{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto py-6 md:py-10">
+    <a href="{% url 'foundation:settings_home' %}" class="fp-btn-ghost text-sm mb-6"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Configurações</a>
+    <h1 class="font-display text-2xl md:text-3xl font-bold tracking-tight">Aparência</h1>
+    <p class="mt-2 text-sm text-ink/70 dark:text-night-subtle">Escolha o tema da interface.</p>
+
+    <div class="fp-card mt-6 p-6">
+        <div class="grid grid-cols-3 gap-3" role="radiogroup" aria-label="Tema">
+            <button type="button" data-theme="light" class="fp-theme-option fp-btn-ghost">Claro</button>
+            <button type="button" data-theme="dark" class="fp-theme-option fp-btn-ghost">Escuro</button>
+            <button type="button" data-theme="system" class="fp-theme-option fp-btn-ghost">Sistema</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    (function () {
+        var options = document.querySelectorAll('.fp-theme-option');
+        var apply = function (t) {
+            try { localStorage.setItem('findapro-theme', t); } catch (e) { /* no-op */ }
+            var dark = t === 'dark' || (t === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            document.documentElement.classList.toggle('dark', dark);
+            document.documentElement.dataset.themePref = t;
+            options.forEach(function (o) {
+                var on = o.dataset.theme === t;
+                o.classList.toggle('fp-theme-active', on);
+                o.setAttribute('aria-checked', on ? 'true' : 'false');
+            });
+        };
+        var listener = null;
+        var current = function () { return localStorage.getItem('findapro-theme') || 'system'; };
+        if (listener) window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', listener);
+        listener = function () { if (current() === 'system') apply('system'); };
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', listener);
+        apply(current());
+        options.forEach(function (o) { o.addEventListener('click', function () { apply(o.dataset.theme); }); });
+    })();
+</script>
+<style>
+    .fp-theme-active { border-color: #171717 !important; font-weight: 600; }
+    .dark .fp-theme-active { border-color: #F7F6F2 !important; }
+</style>
+{% endblock %}

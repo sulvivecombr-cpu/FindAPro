@@ -5,9 +5,22 @@ module.exports = {
     './apps/**/templates/**/*.html',
     './static/js/**/*.js',
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
+        /* FindAPro design tokens (Phase 0) */
+        'ink': '#171717',
+        'paper': '#F7F6F2',
+        'surface': '#FFFFFF',
+        'line': '#C8C3BB',
+        'night': {
+          'DEFAULT': '#141413',
+          'raised': '#201F1D',
+          'line': '#383631',
+          'text': '#F7F6F2',
+          'subtle': '#A8A49C',
+        },
         'brand': {
           50: '#f0fdf4',
           100: '#dcfce7',

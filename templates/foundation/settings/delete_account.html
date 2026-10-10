@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Excluir conta{% endblock %}
+
+{% block content %}
+<div class="max-w-lg mx-auto py-6 md:py-10">
+    <a href="{% url 'foundation:settings_account' %}" class="fp-btn-ghost text-sm mb-6"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Conta</a>
+    <h1 class="font-display text-2xl md:text-3xl font-bold tracking-tight">Excluir conta</h1>
+
+    <div class="mt-6 rounded-2xl border border-red-300 dark:border-red-900 bg-red-50 dark:bg-red-950/40 p-5 text-sm text-ink/80 dark:text-night-text/90">
+        <p class="font-semibold">Esta ação é irreversível.</p>
+        <ul class="mt-2 list-disc pl-5 space-y-1">
+            <li>Seus dados pessoais serão removidos conforme a LGPD (Lei 13.709/2018).</li>
+            <li>Um registro da exclusão será mantido para fins de conformidade legal.</li>
+            <li>Você será desconectado imediatamente.</li>
+        </ul>
+    </div>
+
+    <form method="post" class="fp-card mt-6 p-6 space-y-5" novalidate>
+        {% csrf_token %}
+        {% if form.non_field_errors %}<p class="fp-error">{{ form.non_field_errors.0 }}</p>{% endif %}
+        <div>
+            <label for="{{ form.reason.id_for_label }}" class="fp-label">{{ form.reason.label }}</label>
+            {{ form.reason }}
+        </div>
+        <div>
+            <label for="{{ form.password.id_for_label }}" class="fp-label">{{ form.password.label }}</label>
+            {{ form.password }}
+            {% if form.password.errors %}<p class="fp-error">{{ form.password.errors.0 }}</p>{% endif %}
+        </div>
+        <button type="submit" class="fp-btn-danger w-full text-base">Confirmar exclusão</button>
+    </form>
+</div>
+{% endblock %}

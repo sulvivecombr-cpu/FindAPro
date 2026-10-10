@@ -19,6 +19,17 @@
 - `ALLOWED_HOSTS=*` in compose (dev only); `DEBUG=True`.
 - `BASE44_PREVIEW_MODE=1` is passed through; nothing in the app reads it yet.
 
+## Phase 0 foundation (apps/foundation)
+- LGPD model: UserProfile (role/account_type/status/locale), ProfessionalProfile (stub), ConsentRecord, AccountDeletionRequest, AuditLog (append-only — save() blocks edits), LegalDocument (5 pt-BR docs seeded by migration 0002; platform content, not user data).
+- Row-level security is enforced at the app layer: models expose `for_user(user)`; views guard with `login_required` + role checks (client hitting professional onboarding gets 403). Postgres-level RLS not in place.
+- Signup: `foundation.views.SignUpView` mounted at `/accounts/register/` (accounts/urls was repointed). Intent values MUST be `customer`/`provider` (matches `CustomUser.user_type`). Consent captured with IP+UA at signup; Google signups go through a consent screen.
+- Google OAuth: minimal stdlib module `foundation/google_oauth.py`; requires GOOGLE_CLIENT_ID/GOOGLE_CLIENT_SECRET secrets (button hidden until configured). Uses Google tokeninfo endpoint for validation.
+- Account deletion: `/settings/conta/excluir/` — password confirm → AccountDeletionRequest + AuditLog → anonymize (is_active=False, email rewritten) → logout.
+- Routing map: /, /categories, /legal/*, /app/*, /settings/*, /admin (staff only); handlers 403/404/500 in config/urls.py. Legacy marketplace modules (providers, reviews, bcubed, accounts) stay mounted but unlinked — rebuilt in later phases.
+- Design tokens in tailwind.config.js + `fp-*` component classes in static/src/input.css; dark mode via `class` + localStorage key `findapro-theme` ('light'|'dark'|'system'), applied before first paint in base.html.
+- base.html must keep blocks: title, extra_head, extra_css, content, extra_js (56 legacy templates extend it).
+- Verify flows: `DJANGO_SETTINGS_MODULE=config.settings python -` with a Django test Client (signup, deletion, 403). Zero user records required — delete any test accounts created during verification.
+
 ## Quirks
 - `apps/core/views.py` imports `from django.db import models` at module bottom, after HomeView — works because it runs at module import, but don't "clean it up" blindly.
 - `STATICFILES_STORAGE` is whitenoise `CompressedManifestStaticFilesStorage` — static URLs resolve via manifest, so Tailwind must build `output.css` before `collectstatic`. CSS changes require re-running `collectstatic` (restart `web`).

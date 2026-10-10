@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Configurações{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto py-6 md:py-10">
+    <h1 class="font-display text-2xl md:text-3xl font-bold tracking-tight">Configurações</h1>
+
+    <nav class="mt-8 space-y-3" aria-label="Grupos de configurações">
+        <a href="{% url 'foundation:settings_account' %}" class="fp-card fp-card-hover flex items-center justify-between p-4">
+            <span class="flex items-center gap-3"><i class="fa-solid fa-user w-5 text-center" aria-hidden="true"></i> Conta</span>
+            <i class="fa-solid fa-chevron-right text-xs text-ink/40 dark:text-night-subtle" aria-hidden="true"></i>
+        </a>
+        <a href="{% url 'foundation:settings_appearance' %}" class="fp-card fp-card-hover flex items-center justify-between p-4">
+            <span class="flex items-center gap-3"><i class="fa-solid fa-circle-half-stroke w-5 text-center" aria-hidden="true"></i> Aparência</span>
+            <i class="fa-solid fa-chevron-right text-xs text-ink/40 dark:text-night-subtle" aria-hidden="true"></i>
+        </a>
+        <a href="{% url 'foundation:settings_wallet' %}" class="fp-card flex items-center justify-between p-4 opacity-60" aria-disabled="true">
+            <span class="flex items-center gap-3"><i class="fa-solid fa-wallet w-5 text-center" aria-hidden="true"></i> Carteira</span>
+            <span class="fp-chip">Em breve</span>
+        </a>
+        <a href="{% url 'foundation:settings_help' %}" class="fp-card fp-card-hover flex items-center justify-between p-4">
+            <span class="flex items-center gap-3"><i class="fa-solid fa-circle-question w-5 text-center" aria-hidden="true"></i> Central de Ajuda</span>
+            <i class="fa-solid fa-chevron-right text-xs text-ink/40 dark:text-night-subtle" aria-hidden="true"></i>
+        </a>
+        <a href="{% url 'foundation:settings_policies' %}" class="fp-card fp-card-hover flex items-center justify-between p-4">
+            <span class="flex items-center gap-3"><i class="fa-solid fa-shield-halved w-5 text-center" aria-hidden="true"></i> Políticas do FindAPro</span>
+            <i class="fa-solid fa-chevron-right text-xs text-ink/40 dark:text-night-subtle" aria-hidden="true"></i>
+        </a>
+        <a href="{% url 'foundation:settings_legal' %}" class="fp-card fp-card-hover flex items-center justify-between p-4">
+            <span class="flex items-center gap-3"><i class="fa-solid fa-scale-balanced w-5 text-center" aria-hidden="true"></i> Legal</span>
+            <i class="fa-solid fa-chevron-right text-xs text-ink/40 dark:text-night-subtle" aria-hidden="true"></i>
+        </a>
+    </nav>
+</div>
+{% endblock %}

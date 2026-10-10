@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Carteira{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto py-6 md:py-10">
+    <a href="{% url 'foundation:settings_home' %}" class="fp-btn-ghost text-sm mb-6"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Configurações</a>
+    <h1 class="font-display text-2xl md:text-3xl font-bold tracking-tight">Carteira</h1>
+
+    <div class="fp-empty mt-8">
+        <span class="fp-empty-icon"><i class="fa-solid fa-wallet" aria-hidden="true"></i></span>
+        <p class="fp-empty-title">Carteira indisponível</p>
+        <p class="fp-empty-text">A carteira (saldo, pagamentos e saques) será ativada na fase de pagamentos.</p>
+    </div>
+</div>
+{% endblock %}

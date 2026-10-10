@@ -13,6 +13,16 @@
       "name": "OPENAI_API_KEY",
       "description": "OpenAI API key for B-Cubed AI features (https://platform.openai.com/api-keys). Optional — the app boots without it.",
       "requiredAtBoot": false
+    },
+    {
+      "name": "GOOGLE_CLIENT_ID",
+      "description": "Google OAuth 2.0 Client ID (https://console.cloud.google.com/apis/credentials). Optional — Sign in with Google stays hidden until configured.",
+      "requiredAtBoot": false
+    },
+    {
+      "name": "GOOGLE_CLIENT_SECRET",
+      "description": "Google OAuth 2.0 Client Secret paired with GOOGLE_CLIENT_ID. Optional.",
+      "requiredAtBoot": false
     }
   ]
 }

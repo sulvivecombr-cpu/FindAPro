@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Onboarding de profissional{% endblock %}
+
+{% block content %}
+<div class="max-w-xl mx-auto py-8 md:py-14">
+    <h1 class="font-display text-2xl md:text-3xl font-bold tracking-tight">Perfil profissional</h1>
+    <p class="mt-2 text-sm text-ink/70 dark:text-night-subtle">Este é o primeiro passo do caminho de quem oferece serviços.</p>
+
+    <div class="fp-card mt-6 p-6">
+        <div class="fp-empty">
+            <span class="fp-empty-icon"><i class="fa-solid fa-user-plus" aria-hidden="true"></i></span>
+            <p class="fp-empty-title">Configuração do perfil em breve</p>
+            <p class="fp-empty-text">O cadastro completo do profissional (serviços, agenda, portfólio e verificação) será construído na próxima fase.</p>
+        </div>
+        {% if professional %}
+            <dl class="mt-6 grid grid-cols-2 gap-4 text-sm">
+                <div><dt class="text-ink/60 dark:text-night-subtle">Status</dt><dd class="font-medium">{{ professional.get_status_display }}</dd></div>
+                <div><dt class="text-ink/60 dark:text-night-subtle">Onboarding</dt><dd class="font-medium">{% if professional.onboarding_completed %}Concluído{% else %}Pendente{% endif %}</dd></div>
+            </dl>
+        {% endif %}
+        <a href="{% url 'foundation:app_home' %}" class="fp-btn-ghost mt-6 text-sm"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Voltar ao painel</a>
+    </div>
+</div>
+{% endblock %}

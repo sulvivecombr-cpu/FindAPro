@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Categorias{% endblock %}
+
+{% block content %}
+<div class="py-6 md:py-10">
+    <h1 class="font-display text-2xl md:text-3xl font-bold tracking-tight">Categorias</h1>
+    <p class="mt-2 text-sm text-ink/70 dark:text-night-subtle">Escolha uma categoria para encontrar profissionais perto de você.</p>
+
+    {% if categories %}
+        <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {% for category in categories %}
+                <a href="{% url 'providers:category_detail' category.slug %}" class="fp-card fp-card-hover p-5">
+                    <span class="fp-empty-icon mb-4"><i class="fa-solid {{ category.icon|default:'fa-briefcase' }} text-lg" aria-hidden="true"></i></span>
+                    <p class="font-display font-semibold">{{ category.name }}</p>
+                    {% if category.description %}<p class="mt-1 text-sm text-ink/60 dark:text-night-subtle">{{ category.description|truncatechars:90 }}</p>{% endif %}
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="mt-8 fp-empty">
+            <span class="fp-empty-icon"><i class="fa-solid fa-shapes" aria-hidden="true"></i></span>
+            <p class="fp-empty-title">Nenhuma categoria publicada ainda</p>
+            <p class="fp-empty-text">Assim que categorias de serviços forem cadastradas, elas aparecerão aqui.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -6,7 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 User = get_user_model()
 
 INTENT_CHOICES = [
-    ('client', 'Quero contratar'),
+    ('customer', 'Quero contratar'),
     ('provider', 'Quero oferecer serviços'),
 ]
 

@@ -48,6 +48,7 @@ services:
       - |
         npm install --legacy-peer-deps
         npx tailwindcss -i ./static/src/input.css -o ./static/css/output.css --minify
+        npx tailwindcss -i ./static/src/input.css -o ./static/css/output.css --watch &
         until pg_isready -h db -p 5432 -U findapro_user; do sleep 1; done
         python manage.py migrate --noinput
         python manage.py collectstatic --noinput

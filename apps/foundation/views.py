@@ -60,7 +60,7 @@ class SignUpView(TemplateView):
 
         capture_consent(request, user, 'terms')
         capture_consent(request, user, 'privacy')
-        audit(request, 'signup', entity=user)
+        audit(request, 'signup', entity=user, actor=user)
 
         login(request, user)
         messages.success(request, 'Conta criada com sucesso. Bem-vindo(a) ao FindAPro!')
@@ -140,7 +140,7 @@ def _finish_google_signup(request, info, existing):
         UserProfile.objects.get_or_create(user=user)
         capture_consent(request, user, 'terms')
         capture_consent(request, user, 'privacy')
-        audit(request, 'signup_google', entity=user)
+        audit(request, 'signup_google', entity=user, actor=user)
     request.session.pop('google_profile', None)
     login(request, user)
     messages.success(request, 'Bem-vindo(a) ao FindAPro!')
@@ -193,7 +193,9 @@ def legal_detail(request, doc_type):
 def app_home(request):
     """/app/ — authenticated dashboard. Real data only: empty states."""
     profile = getattr(request.user, 'foundation_profile', None)
-    return render(request, 'foundation/app_home.html', {'profile': profile})
+    professional = ProfessionalProfile.objects.filter(user=request.user).first()
+    return render(request, 'foundation/app_home.html',
+                  {'profile': profile, 'professional': professional})
 
 
 @login_required

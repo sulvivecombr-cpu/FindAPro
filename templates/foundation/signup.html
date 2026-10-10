@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Criar conta{% endblock %}
+
+{% block content %}
+<div class="max-w-lg mx-auto py-8 md:py-14">
+    <h1 class="font-display text-2xl md:text-3xl font-bold tracking-tight">Criar conta</h1>
+    <p class="mt-2 text-sm text-ink/70 dark:text-night-subtle">Escolha como você vai usar o FindAPro.</p>
+
+    <div class="fp-card mt-6 p-6">
+        {% if form.non_field_errors %}
+            <div class="mb-4 rounded-xl bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 p-3 text-sm text-red-700 dark:text-red-300">
+                {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="post" novalidate class="space-y-5">
+            {% csrf_token %}
+
+            <!-- Intent: hire vs offer -->
+            <fieldset>
+                <legend class="fp-label">{{ form.intent.label }}</legend>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <label class="fp-card fp-card-hover p-4 cursor-pointer has-[:checked]:border-ink dark:has-[:checked]:border-night-text has-[:checked]:ring-2 has-[:checked]:ring-ink/20">
+                        <input type="radio" name="intent" value="customer" class="sr-only" {% if not form.intent.value or form.intent.value == 'customer' %}checked{% endif %}>
+                        <i class="fa-solid fa-magnifying-glass mb-2" aria-hidden="true"></i>
+                        <span class="block font-medium text-sm">Quero contratar</span>
+                        <span class="block mt-1 text-xs text-ink/60 dark:text-night-subtle">Encontrar profissionais</span>
+                    </label>
+                    <label class="fp-card fp-card-hover p-4 cursor-pointer has-[:checked]:border-ink dark:has-[:checked]:border-night-text has-[:checked]:ring-2 has-[:checked]:ring-ink/20">
+                        <input type="radio" name="intent" value="provider" class="sr-only" {% if form.intent.value == 'provider' %}checked{% endif %}>
+                        <i class="fa-solid fa-briefcase mb-2" aria-hidden="true"></i>
+                        <span class="block font-medium text-sm">Quero oferecer serviços</span>
+                        <span class="block mt-1 text-xs text-ink/60 dark:text-night-subtle">Ser encontrado por clientes</span>
+                    </label>
+                </div>
+                {% if form.intent.errors %}<p class="fp-error">{{ form.intent.errors.0 }}</p>{% endif %}
+            </fieldset>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label for="{{ form.first_name.id_for_label }}" class="fp-label">Nome</label>
+                    {{ form.first_name }}
+                    {% if form.first_name.errors %}<p class="fp-error">{{ form.first_name.errors.0 }}</p>{% endif %}
+                </div>
+                <div>
+                    <label for="{{ form.last_name.id_for_label }}" class="fp-label">Sobrenome</label>
+                    {{ form.last_name }}
+                    {% if form.last_name.errors %}<p class="fp-error">{{ form.last_name.errors.0 }}</p>{% endif %}
+                </div>
+            </div>
+
+            <div>
+                <label for="{{ form.email.id_for_label }}" class="fp-label">E-mail</label>
+                {{ form.email }}
+                {% if form.email.errors %}<p class="fp-error">{{ form.email.errors.0 }}</p>{% endif %}
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                    <label for="{{ form.password1.id_for_label }}" class="fp-label">Senha</label>
+                    {{ form.password1 }}
+                    {% if form.password1.errors %}<p class="fp-error">{{ form.password1.errors.0 }}</p>{% endif %}
+                </div>
+                <div>
+                    <label for="{{ form.password2.id_for_label }}" class="fp-label">Confirmar senha</label>
+                    {{ form.password2 }}
+                    {% if form.password2.errors %}<p class="fp-error">{{ form.password2.errors.0 }}</p>{% endif %}
+                </div>
+            </div>
+
+            <!-- LGPD consent capture -->
+            <div class="space-y-2 rounded-xl bg-paper dark:bg-night p-4 border border-line dark:border-night-line">
+                <label class="flex items-start gap-3 text-sm">
+                    {{ form.accept_terms }}
+                    <span>Li e aceito os <a href="{% url 'foundation:legal_detail' 'termos' %}" class="underline font-medium" target="_blank" rel="noopener">Termos de Uso</a></span>
+                </label>
+                {% if form.accept_terms.errors %}<p class="fp-error">{{ form.accept_terms.errors.0 }}</p>{% endif %}
+                <label class="flex items-start gap-3 text-sm">
+                    {{ form.accept_privacy }}
+                    <span>Li e aceito a <a href="{% url 'foundation:legal_detail' 'privacidade' %}" class="underline font-medium" target="_blank" rel="noopener">Política de Privacidade</a> (LGPD)</span>
+                </label>
+                {% if form.accept_privacy.errors %}<p class="fp-error">{{ form.accept_privacy.errors.0 }}</p>{% endif %}
+            </div>
+
+            <button type="submit" class="fp-btn-primary w-full text-base">Criar minha conta</button>
+        </form>
+
+        {% if google_configured %}
+            <div class="my-5 flex items-center gap-3 text-xs text-ink/50 dark:text-night-subtle select-none">
+                <span class="h-px flex-1 bg-line dark:bg-night-line"></span>ou<span class="h-px flex-1 bg-line dark:bg-night-line"></span>
+            </div>
+            <a href="{% url 'foundation:google_login' %}" class="fp-btn-ghost w-full text-base">
+                <i class="fa-brands fa-google" aria-hidden="true"></i> Continuar com Google
+            </a>
+        {% endif %}
+    </div>
+
+    <p class="mt-6 text-center text-sm text-ink/70 dark:text-night-subtle">
+        Já tem conta? <a href="{% url 'accounts:login' %}" class="font-medium underline">Entrar</a>
+    </p>
+</div>
+{% endblock %}

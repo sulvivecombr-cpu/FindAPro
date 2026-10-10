@@ -137,3 +137,124 @@
   @apply bg-brand-200 text-brand-900;
 }
 
+/* ============================================================
+   FindAPro Phase 0 — design system (tokens + component library)
+   ============================================================ */
+
+@layer base {
+  :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    @apply outline-none ring-2 ring-ink/70 dark:ring-night-subtle ring-offset-2 ring-offset-paper dark:ring-offset-night;
+  }
+
+  /* Accessibility: honor reduced-motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+    .fp-splash {
+      display: none !important;
+    }
+  }
+}
+
+@layer components {
+  /* UI chrome: no accidental text selection / long-press callouts */
+  .fp-chrome {
+    @apply select-none;
+    -webkit-touch-callout: none;
+  }
+
+  .fp-brand-mark {
+    @apply border-b-[3px] border-line dark:border-night-line;
+  }
+
+  /* Buttons */
+  .fp-btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-ink px-4 py-2.5 text-sm font-medium text-paper transition-all duration-200 hover:opacity-90 active:scale-[0.98] dark:bg-paper dark:text-ink;
+  }
+
+  .fp-btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-line px-3 py-2 text-sm font-medium text-ink transition-colors duration-200 hover:bg-line/30 dark:border-night-line dark:text-night-text dark:hover:bg-night-line/40;
+  }
+
+  .fp-btn-danger {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-red-700 px-4 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90;
+  }
+
+  .fp-nav-link {
+    @apply rounded-xl px-3 py-2 text-sm font-medium text-ink/70 transition-colors duration-200 hover:bg-line/40 hover:text-ink dark:text-night-subtle dark:hover:bg-night-line/40 dark:hover:text-night-text;
+  }
+
+  .fp-tab {
+    @apply flex flex-col items-center justify-center gap-1 text-xs font-medium text-ink/60 transition-colors duration-200 dark:text-night-subtle;
+  }
+
+  .fp-tab-active {
+    @apply text-ink font-semibold dark:text-night-text;
+  }
+
+  .fp-footer-link {
+    @apply text-ink/70 transition-colors duration-200 hover:text-ink dark:text-night-subtle dark:hover:text-night-text;
+  }
+
+  /* Surfaces */
+  .fp-card {
+    @apply rounded-2xl border border-line bg-surface transition-shadow duration-200 dark:border-night-line dark:bg-night-raised;
+  }
+
+  .fp-card-hover {
+    @apply hover:shadow-md hover:-translate-y-0.5 transition-all duration-200;
+  }
+
+  /* Forms */
+  .fp-label {
+    @apply mb-2 block text-sm font-medium text-ink dark:text-night-text;
+  }
+
+  .fp-input {
+    @apply w-full rounded-xl border border-line bg-surface px-4 py-3 text-ink placeholder-ink/40 transition-colors duration-200 focus:border-ink dark:border-night-line dark:bg-night dark:text-night-text dark:placeholder-night-subtle dark:focus:border-night-subtle;
+  }
+
+  .fp-error {
+    @apply mt-1 text-sm text-red-700 dark:text-red-400;
+  }
+
+  .fp-checkbox {
+    @apply mt-1 h-5 w-5 rounded border-line text-ink focus:ring-ink dark:border-night-line dark:bg-night;
+  }
+
+  /* Chips */
+  .fp-chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-3 py-1 text-xs font-medium text-ink/80 dark:border-night-line dark:bg-night-raised dark:text-night-subtle;
+  }
+
+  /* Empty state — real data only, no placeholders */
+  .fp-empty {
+    @apply flex flex-col items-center justify-center rounded-2xl border border-dashed border-line px-6 py-12 text-center dark:border-night-line;
+  }
+
+  .fp-empty-icon {
+    @apply mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-line/40 text-ink/60 dark:bg-night-line/60 dark:text-night-subtle;
+  }
+
+  .fp-empty-title {
+    @apply font-display text-base font-semibold text-ink dark:text-night-text;
+  }
+
+  .fp-empty-text {
+    @apply mt-1 max-w-sm text-sm text-ink/60 dark:text-night-subtle;
+  }
+
+  /* Skeleton loaders */
+  .fp-skeleton {
+    @apply animate-pulse rounded-xl bg-line/50 dark:bg-night-line/60;
+  }
+
+  /* Section heading */
+  .fp-section-title {
+    @apply font-display text-xl font-bold tracking-tight text-ink dark:text-night-text sm:text-2xl;
+  }
+}
+
