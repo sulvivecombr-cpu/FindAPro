@@ -1,0 +1,20 @@
+# Base44 dev image — plain Python runtime with Node.js for TailwindCSS.
+# Source is bind-mounted at runtime; this image only provides tooling + pip deps.
+FROM python:3.12-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+WORKDIR /app
+
+# System dependencies: postgresql-client (pg_isready), curl (healthcheck), Node.js (Tailwind)
+RUN apt-get update && apt-get install -y \
+    postgresql-client \
+    curl \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies (requirements.txt is the only file copied — source is bind-mounted)
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt

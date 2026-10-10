@@ -1,0 +1,67 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: findapro_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=findapro
+      - POSTGRES_USER=findapro_user
+      - POSTGRES_PASSWORD=findapro_dev_password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U findapro_user -d findapro"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: on-failure
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.base44
+    container_name: findapro_web
+    working_dir: /app
+    volumes:
+      - .:/app
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    ports:
+      - "3000:8000"
+    env_file:
+      - ./.env.base44-defaults
+      - /run/base44/app.env
+    environment:
+      - DEBUG=True
+      - POSTGRES_DB=findapro
+      - POSTGRES_USER=findapro_user
+      - POSTGRES_PASSWORD=findapro_dev_password
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - ALLOWED_HOSTS=*
+      - BASE44_PREVIEW_MODE=1
+    depends_on:
+      db:
+        condition: service_healthy
+    command:
+      - sh
+      - -ec
+      - |
+        npm install --legacy-peer-deps
+        npx tailwindcss -i ./static/src/input.css -o ./static/css/output.css --minify
+        until pg_isready -h db -p 5432 -U findapro_user; do sleep 1; done
+        python manage.py migrate --noinput
+        python manage.py collectstatic --noinput
+        python manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.filter(username='admin').exists() or User.objects.create_superuser('admin', 'admin@findapro.com', 'adminpassword')"
+        exec python manage.py runserver 0.0.0.0:8000
+    restart: on-failure
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8000/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 120s
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
