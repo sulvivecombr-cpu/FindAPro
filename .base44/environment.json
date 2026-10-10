@@ -1,0 +1,17 @@
+{
+  "previewPort": 3000,
+  "healthPath": "/",
+  "startCommand": "docker compose -f docker-compose.base44.yml up -d",
+  "secrets": [
+    {
+      "name": "SECRET_KEY",
+      "description": "Django SECRET_KEY (provided by the user; a dev default exists in settings if unset).",
+      "requiredAtBoot": false
+    },
+    {
+      "name": "OPENAI_API_KEY",
+      "description": "OpenAI API key for the B³ Hub AI features (apps/bcubed). Optional; features degrade without it.",
+      "requiredAtBoot": false
+    }
+  ]
+}
